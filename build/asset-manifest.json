@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/static/css/main.ef93ec4b.chunk.css",
+    "main.js": "/static/js/main.d9d9e8a0.chunk.js",
+    "main.js.map": "/static/js/main.d9d9e8a0.chunk.js.map",
+    "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
+    "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
+    "static/js/2.7237a9c1.chunk.js": "/static/js/2.7237a9c1.chunk.js",
+    "static/js/2.7237a9c1.chunk.js.map": "/static/js/2.7237a9c1.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.ddb328f0e2fc9f5ca5e0e4d060343ef5.js": "/precache-manifest.ddb328f0e2fc9f5ca5e0e4d060343ef5.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.ef93ec4b.chunk.css.map": "/static/css/main.ef93ec4b.chunk.css.map",
+    "static/media/aeroplane.jpg": "/static/media/aeroplane.adbb2f75.jpg",
+    "static/media/antoine-barres.jpg": "/static/media/antoine-barres.dfbf459c.jpg",
+    "static/media/ayo-ogunseinde-2.jpg": "/static/media/ayo-ogunseinde-2.bfc688ca.jpg",
+    "static/media/benz.png": "/static/media/benz.d88f4ce9.png",
+    "static/media/clem-onojeghuo-2.jpg": "/static/media/clem-onojeghuo-2.bb4b9ac9.jpg",
+    "static/media/clem-onojeghuo-3.jpg": "/static/media/clem-onojeghuo-3.ae11d928.jpg",
+    "static/media/clouds.png": "/static/media/clouds.61c4e000.png",
+    "static/media/creative-tim-white-slim2.png": "/static/media/creative-tim-white-slim2.df0cdbfb.png",
+    "static/media/daniel-olahh.jpg": "/static/media/daniel-olahh.facbbdb7.jpg",
+    "static/media/erik-lucatero-2.jpg": "/static/media/erik-lucatero-2.2051e0e8.jpg",
+    "static/media/fabio-mangione.jpg": "/static/media/fabio-mangione.f26c34bb.jpg",
+    "static/media/joe-gardner-2.jpg": "/static/media/joe-gardner-2.76ff47ae.jpg",
+    "static/media/login-image.jpg": "/static/media/login-image.be9fa468.jpg",
+    "static/media/logo.png": "/static/media/logo.6e96f788.png",
+    "static/media/mac_apple.jpg": "/static/media/mac_apple.28065448.jpg",
+    "static/media/paper-kit.scss": "/static/media/nucleo-icons.f32ed5ad.eot"
+  }
+}
