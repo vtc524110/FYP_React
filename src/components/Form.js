@@ -7,8 +7,6 @@ import {
     FormGroup,
     Input,
     Container,
-    Row,
-    Col
 } from "reactstrap";
 
 class Form extends React.Component {
@@ -17,7 +15,13 @@ class Form extends React.Component {
 
         this.state = {
             biddings: [],
-            category: Array(),
+            category: [],
+            mainCategory: null,
+            selectedMainCategory: "",
+            subCategory: <option selected>Choose Main Category...</option>,
+            selectedSubCategory: "",
+            thirdCategory: <option selected>Choose Sub Category...</option>,
+            selectedThirdCategory: "",
             lastID: "",
             title: "",
             sellingPrice: "",
@@ -26,51 +30,6 @@ class Form extends React.Component {
             error: null
         };
 
-    }
-
-    postForm(lastID, title, price, sellerID) {
-        axios.post("http://desmond.business:8080/fyp/postBidding", {
-            "id": lastID,
-            "title": title,
-            "category_third_lv_id": null,
-            "condition_id": null,
-            "details": null,
-            "selling_price": null,
-            "bidding_price": price,
-            "closing_date_timestmp": null,
-            "theBiddingPhotos": {
-                "id": 118,
-                "photo1": null,
-                "photo_type1": null,
-                "photo2": null,
-                "photo_type2": null,
-                "photo3": null,
-                "photo_type3": null,
-                "create_timestamp": "2020-05-17 15:14:00",
-                "modify_timestamp": null
-            },
-            "bidding_currency": null,
-            "district_id": null,
-            "seller_customer_id": sellerID,
-            "buyer_customer_id": null,
-            "bidding_status_id": 1,
-            "logistics_di_id": null,
-            "payment_id": null,
-            "seller_ref_id": null,
-            "buyer_ref_id": null,
-            "remarks": null,
-            "create_timestamp": "2020-05-17 15:14:00",
-            "modify_timestamp": null
-        })
-            .then(function (response) {
-                console.log(response);
-                this.setState({
-                    modalIsOpen: true
-                })
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
     }
 
     handleSubmit = (event) => {
@@ -120,12 +79,29 @@ class Form extends React.Component {
 
     handleInputChange = (event) => {
         event.preventDefault()
-        console.log(event)
-        console.log(event.target.name)
-        console.log(event.target.value)
         this.setState({
             [event.target.name]: event.target.value
         })
+    }
+
+    handleMainCategoryChange = (event) => {
+        //event.preventDefault()
+        this.setState({
+            [event.target.name]: event.target.value,
+            selectedThirdCategory:""
+        })
+
+        this.renderSubCategoryOption() 
+
+    }
+
+    handleSubCategoryChange = (event) => {
+        //event.preventDefault()
+        this.setState({
+            [event.target.name]: event.target.value
+        })
+
+        this.renderThirdCategoryOption()
     }
 
     componentDidMount() {
@@ -155,8 +131,8 @@ class Form extends React.Component {
                     error: err
                 });
             });
-        
-        this.renderCategoryOption()
+
+        this.renderMainCategoryOption()
 
     }
 
@@ -177,7 +153,6 @@ class Form extends React.Component {
             return this.renderError();
         }
 
-        console.log(this.state.biddings[0]);
         return (
             <h6>
                 Success getting Bidding Records
@@ -185,23 +160,31 @@ class Form extends React.Component {
         );
     }
 
-    renderCategoryOption = () => {
+    renderMainCategoryOption = () => {
+        const renderMainCategory = []
+        renderMainCategory.push(
+            <option selected>Choose Main Category...</option>
+        )
         axios.get("http://desmond.business:8080/fyp/getCategoryFirstLvs")
             .then(res => {
                 // Transform the raw data by extracting the nested posts
-                
+
                 const posts = res.data.results;
                 //console.log(posts);
                 // Update state to trigger a re-render.
                 // Clear any errors, and turn off the loading indiciator.
                 posts.forEach((elm) => {
-                    console.log(elm.category_first_lv_name);
-                    this.category.push(
-                        <option>{elm.category_first_lv_name}</option>
-                    )
+
+                    renderMainCategory.push(
+                        <option
+                            value={elm.id}
+                        >{elm.category_first_lv_name}
+                        </option>
+                    );
                 })
                 this.setState({
                     category: posts,
+                    mainCategory: renderMainCategory,
                     loading: false,
                     error: null
                 });
@@ -213,6 +196,74 @@ class Form extends React.Component {
                     error: err
                 });
             });
+
+    }
+
+    renderSubCategoryOption = () => {
+        const renderSubCategory = []
+
+        axios.get("http://desmond.business:8080/fyp/getCategoryFirstLvs")
+            .then(res => {
+                // Transform the raw data by extracting the nested posts
+
+                // Transform the raw data by extracting the nested posts
+                const posts = this.state.category
+                posts.forEach(elm => {
+                    if (elm.id == this.state.selectedMainCategory) {
+                        renderSubCategory.push(elm.theCategorySecondLvs.map((obj, index) =>
+                            <option
+                                value={obj.id}
+                            >{obj.category_second_lv_name}
+                            </option>
+                        ))
+                    }
+                })
+                console.log("selectedSubCategory has been changed to")
+                console.log(renderSubCategory[0][0].props.value)
+                this.setState({
+                    subCategory: renderSubCategory,
+                    selectedSubCategory: renderSubCategory[0][0].props.value,
+                    loading: false,
+                    error: null
+                });
+            })
+            .catch(err => {
+                // Something went wrong. Save the error in state and re-render.
+                this.setState({
+                    loading: false,
+                    error: err
+                });
+            });
+
+    }
+
+    renderThirdCategoryOption = () => {
+        const renderThirdCategory = Array()
+        // Transform the raw data by extracting the nested posts
+        const posts = this.state.category
+        console.log("renderThirdCategoryOption")
+        console.log("this.state.selectedSubCategory")
+        console.log(this.state.selectedSubCategory)
+        posts.forEach(elm => {
+            elm.theCategorySecondLvs.forEach(elm => {
+                if (elm.id == this.state.selectedSubCategory) {
+                    renderThirdCategory.push(
+                        elm.theCategoryThirdLvLv.map((obj, index) =>
+                            <option
+                                value={obj.id}
+                            >{obj.category_third_lv_name}
+                            </option>
+                        ))
+                }
+            })
+
+        })
+        this.setState({
+            thirdCategory: renderThirdCategory,
+            loading: false,
+            error: null
+        });
+
     }
 
     render() {
@@ -223,28 +274,60 @@ class Form extends React.Component {
                     <div className="title">
                         <h3>Sell Information Form</h3>
                         <h6>Form ID : {this.state.lastID}</h6>
+                        <h6>Title: {this.state.title} </h6>
+                        <h6>Main Category: {this.state.selectedMainCategory}</h6>
+                        <h6>Sub Category: {this.state.selectedSubCategory}</h6>
+                        <h6>Third Category: {this.state.selectedThirdCategory}</h6>
                     </div>
                     <form onSubmit={this.handleSubmit}>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label>Title</label>
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    id={"title"}
-                                    placeholder={this.state.title}
-                                    onChange={this.handleInputChange}
-                                    ref={(input) => this.myinput = input}
-                                />
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label>Category</label>
-                                <select id="category" class="form-control">
-                                    <option selected>Choose category...</option>
-                                    <option>...</option>
-                                    {this.state.category}
-                                </select>
-                            </div>
+
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="title"
+                                name="title"
+                                placeholder={this.state.title}
+                                onChange={this.handleInputChange}
+                                ref={(input) => this.myinput = input}
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label>Main Category</label>
+                            <select
+                                id="selectedMainCategory"
+                                name="selectedMainCategory"
+                                class="form-control"
+                                onChange={this.handleMainCategoryChange}
+                                ref={(input) => this.myinput = input}
+                            >
+                                {this.state.mainCategory}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Sub Category</label>
+                            <select
+                                id="selectedSubCategory"
+                                name="selectedSubCategory"
+                                class="form-control"
+                                onChange={this.handleSubCategoryChange}
+                                ref={(input) => this.myinput = input}
+                            >
+                                {this.state.subCategory}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Third Category</label>
+                            <select
+                                id="selectedThirdCategory"
+                                name="selectedThirdbCategory"
+                                class="form-control"
+                                onChange={this.handleInputChange}
+                                ref={(input) => this.myinput = input}
+                            >
+                                {this.state.thirdCategory}
+                            </select>
                         </div>
                         <div class="form-group">
                             <label>Description</label>
@@ -268,7 +351,7 @@ class Form extends React.Component {
                                     type="text"
                                     class="form-control"
                                     id="sellingPrice"
-                                    placeholder = {this.state.sellingPrice}
+                                    placeholder={this.state.sellingPrice}
                                 />
                             </div>
                             <div class="form-group col-md-2">
@@ -279,7 +362,7 @@ class Form extends React.Component {
                                     <option>USD</option>
                                     <option>JPY</option>
                                 </select>
-                            </div>  
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="form-check">
