@@ -18,12 +18,13 @@ class Form extends React.Component {
             category: [],
             mainCategory: null,
             selectedMainCategory: "",
-            subCategory: <option selected>Choose Main Category...</option>,
+            subCategory: null,
             selectedSubCategory: "",
-            thirdCategory: <option selected>Choose Sub Category...</option>,
+            thirdCategory: null,
             selectedThirdCategory: "",
             lastID: "",
             title: "",
+            remark: "",
             sellingPrice: "",
             sellerID: "",
             loading: true,
@@ -87,8 +88,7 @@ class Form extends React.Component {
     handleMainCategoryChange = (event) => {
         //event.preventDefault()
         this.setState({
-            [event.target.name]: event.target.value,
-            selectedThirdCategory:""
+            [event.target.name]: event.target.value
         })
 
         this.renderSubCategoryOption() 
@@ -201,7 +201,6 @@ class Form extends React.Component {
 
     renderSubCategoryOption = () => {
         const renderSubCategory = []
-
         axios.get("http://desmond.business:8080/fyp/getCategoryFirstLvs")
             .then(res => {
                 // Transform the raw data by extracting the nested posts
@@ -218,11 +217,9 @@ class Form extends React.Component {
                         ))
                     }
                 })
-                console.log("selectedSubCategory has been changed to")
-                console.log(renderSubCategory[0][0].props.value)
+             
                 this.setState({
                     subCategory: renderSubCategory,
-                    selectedSubCategory: renderSubCategory[0][0].props.value,
                     loading: false,
                     error: null
                 });
@@ -234,37 +231,51 @@ class Form extends React.Component {
                     error: err
                 });
             });
-
+            
     }
 
     renderThirdCategoryOption = () => {
-        const renderThirdCategory = Array()
-        // Transform the raw data by extracting the nested posts
-        const posts = this.state.category
-        console.log("renderThirdCategoryOption")
-        console.log("this.state.selectedSubCategory")
-        console.log(this.state.selectedSubCategory)
-        posts.forEach(elm => {
-            elm.theCategorySecondLvs.forEach(elm => {
-                if (elm.id == this.state.selectedSubCategory) {
-                    renderThirdCategory.push(
-                        elm.theCategoryThirdLvLv.map((obj, index) =>
+        const renderThirdCategory = []
+        axios.get("http://desmond.business:8080/fyp/getCategoryFirstLvs")
+            .then(res => {
+                // Transform the raw data by extracting the nested posts
+
+                // Transform the raw data by extracting the nested posts
+                const posts = this.state.category
+                console.log(posts)
+                posts.forEach(elm => {
+                    elm.theCategorySecondLvs.forEach(subElm=>{
+                 
+                        if(subElm.id==this.state.selectedSubCategory){
+             
+                            renderThirdCategory.push(subElm.theCategoryThirdLvLv.map((obj, index) =>
                             <option
                                 value={obj.id}
                             >{obj.category_third_lv_name}
                             </option>
                         ))
-                }
+                        }
+                     
+                    })
+                })
+                console.log("selectedSubCategory has been changed to")
+                console.log(renderThirdCategory[0][0].props.value)
+                this.setState({
+                    thirdCategory: renderThirdCategory,
+                    loading: false,
+                    error: null
+                });
             })
-
-        })
-        this.setState({
-            thirdCategory: renderThirdCategory,
-            loading: false,
-            error: null
-        });
-
+            .catch(err => {
+                // Something went wrong. Save the error in state and re-render.
+                this.setState({
+                    loading: false,
+                    error: err
+                });
+            });
+            
     }
+    
 
     render() {
 
@@ -274,10 +285,13 @@ class Form extends React.Component {
                     <div className="title">
                         <h3>Sell Information Form</h3>
                         <h6>Form ID : {this.state.lastID}</h6>
-                        <h6>Title: {this.state.title} </h6>
+                        <h6>Last Title: {this.state.title} </h6>
+                        <h6>Last Selling Price: {this.state.sellingPrice}</h6>
                         <h6>Main Category: {this.state.selectedMainCategory}</h6>
                         <h6>Sub Category: {this.state.selectedSubCategory}</h6>
                         <h6>Third Category: {this.state.selectedThirdCategory}</h6>
+                        <h6>Remark: {this.state.remark}</h6>
+                        <h6>Selling Price: {this.state.sellingPrice}</h6>
                     </div>
                     <form onSubmit={this.handleSubmit}>
 
@@ -288,7 +302,7 @@ class Form extends React.Component {
                                 class="form-control"
                                 id="title"
                                 name="title"
-                                placeholder={this.state.title}
+                                placeholder="Title..."
                                 onChange={this.handleInputChange}
                                 ref={(input) => this.myinput = input}
                             />
@@ -314,6 +328,7 @@ class Form extends React.Component {
                                 onChange={this.handleSubCategoryChange}
                                 ref={(input) => this.myinput = input}
                             >
+                                <option selected>Choose Main Category...</option>
                                 {this.state.subCategory}
                             </select>
                         </div>
@@ -321,21 +336,24 @@ class Form extends React.Component {
                             <label>Third Category</label>
                             <select
                                 id="selectedThirdCategory"
-                                name="selectedThirdbCategory"
+                                name="selectedThirdCategory"
                                 class="form-control"
                                 onChange={this.handleInputChange}
                                 ref={(input) => this.myinput = input}
                             >
+                                <option selected>Choose Sub Category...</option>
                                 {this.state.thirdCategory}
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Description</label>
+                            <label>Remark</label>
                             <input
+                                id="remark"
+                                name="remark"
                                 type="text"
                                 class="form-control"
                                 id="description"
-                                placeholder="Description..."
+                                placeholder="Remark..."
                                 onChange={this.handleInputChange}
                                 ref={(input) => this.myinput = input}
                             />
@@ -348,10 +366,12 @@ class Form extends React.Component {
                             <div class="form-group col-md-4">
                                 <label>Selling Price</label>
                                 <input
+                                id="sellingPrice"
+                                name="sellingPrice"
                                     type="text"
                                     class="form-control"
                                     id="sellingPrice"
-                                    placeholder={this.state.sellingPrice}
+                                    placeholder="Selling Price..."
                                 />
                             </div>
                             <div class="form-group col-md-2">
