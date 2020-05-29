@@ -32,6 +32,7 @@ import LandingPage from "views/examples/LandingPage.js";
 import ProfilePage from "views/examples/ProfilePage.js";
 import RegisterPage from "views/examples/RegisterPage.js";
 import CarsForSale from "views/CarsForSale.js";
+import ProductPage from "views/ProductPage.js";
 // others
 
 ReactDOM.render(
@@ -48,11 +49,15 @@ ReactDOM.render(
         render={props => <CarsForSale {...props} />}
       />
       <Route
+        path="/item"
+        render={props => <ProductPage {...props} />}
+      />
+      <Route
         path="/landing-page"
         render={props => <LandingPage {...props} />}
       />
       <Route
-        path="/profile-page"
+        exact path="/profile-page"
         render={props => <ProfilePage {...props} />}
       />
       <Route

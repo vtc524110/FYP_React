@@ -29,44 +29,20 @@ function IndexHeader() {
     <>
 
       <div
-        className="page-header section-dark"
+        className="page-header page-header-xs"
         style={{
           backgroundImage:
-            "url(" + require("assets/img/antoine-barres.jpg") + ")",
+            "url(" + require("assets/img/banner.jpeg") + ")",
         }}
       >
 
-        <div className="filter" />
+  
         <div className="content-center">
           <Container>
-            <div className="title-brand">
-              <h1 className="presentation-title">Bid For Everything</h1>
-            </div>
-            <h2 className="presentation-subtitle text-center">
-              A ReactJS Bidding Website
-            </h2>
+
           </Container>
         </div>
-        <div
-          className="moving-clouds"
-          style={{
-            backgroundImage: "url(" + require("assets/img/clouds.png") + ")"
-          }}
-        />
-        <h6 className="category category-absolute">
-          Designed and coded by{" "}
-          <a
-            href="https://www.creative-tim.com?ref=pkr-index-page"
-            target="_blank"
-          >
-            <img
-              alt="..."
-              className="creative-tim-logo"
-              src={require("assets/img/creative-tim-white-slim2.png")}
-            />
-          </a>
-        </h6>
-      </div>
+        </div>
     </>
   );
 }

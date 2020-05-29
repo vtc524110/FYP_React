@@ -28,6 +28,7 @@ import DemoFooter from "components/Footers/DemoFooter.js";
 // index sections
 import SectionProgress from "views/index-sections/SectionProgress.js";
 import SectionCatalogue from "views/index-sections/SectionCatalogue.js";
+import SectionCarousel from "./index-sections/SectionCarousel";
 function Index() {
   document.documentElement.classList.remove("nav-open");
   React.useEffect(() => {
@@ -42,6 +43,7 @@ function Index() {
       <IndexHeader />
       <div className="main">
         <SectionProgress />
+        <SectionCarousel />
         <SectionCatalogue />
         <DemoFooter />
       </div>

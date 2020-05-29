@@ -1,11 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import Modal from 'react-modal';
 
 import {
-    Button,
-    FormGroup,
-    Input,
     Container,
 } from "reactstrap";
 
@@ -27,6 +23,8 @@ class Form extends React.Component {
             remark: "",
             sellingPrice: "",
             sellerID: "",
+            currency: null,
+            checked : false,
             loading: true,
             error: null
         };
@@ -38,7 +36,7 @@ class Form extends React.Component {
         axios.post('http://desmond.business:8080/fyp/postBidding', {
             "id": this.state.lastID,
             "title": this.state.title,
-            "category_third_lv_id": null,
+            "category_third_lv_id": this.state.selectedThirdCategory,
             "condition_id": null,
             "details": null,
             "selling_price": this.state.sellingPrice,
@@ -64,8 +62,8 @@ class Form extends React.Component {
             "payment_id": null,
             "seller_ref_id": null,
             "buyer_ref_id": null,
-            "remarks": null,
-            "create_timestamp": "2020-05-17 15:14:00",
+            "remarks": this.state.remarks,
+            "create_timestamp": null,
             "modify_timestamp": null
         })
             .then(function (response) {
@@ -76,6 +74,7 @@ class Form extends React.Component {
                 console.log("Error~~~ posting!!!")
                 console.log(error);
             });
+        //window.location.reload(false);
     }
 
     handleInputChange = (event) => {
@@ -85,13 +84,20 @@ class Form extends React.Component {
         })
     }
 
+    handlecheckBoxChange = (event) => {
+        var checkBoxChange = this.state.checked
+        this.setState({
+            checked: !checkBoxChange
+        })
+    }
+
     handleMainCategoryChange = (event) => {
         //event.preventDefault()
         this.setState({
             [event.target.name]: event.target.value
         })
 
-        this.renderSubCategoryOption() 
+        this.renderSubCategoryOption()
 
     }
 
@@ -217,7 +223,7 @@ class Form extends React.Component {
                         ))
                     }
                 })
-             
+
                 this.setState({
                     subCategory: renderSubCategory,
                     loading: false,
@@ -231,7 +237,7 @@ class Form extends React.Component {
                     error: err
                 });
             });
-            
+
     }
 
     renderThirdCategoryOption = () => {
@@ -244,18 +250,18 @@ class Form extends React.Component {
                 const posts = this.state.category
                 console.log(posts)
                 posts.forEach(elm => {
-                    elm.theCategorySecondLvs.forEach(subElm=>{
-                 
-                        if(subElm.id==this.state.selectedSubCategory){
-             
+                    elm.theCategorySecondLvs.forEach(subElm => {
+
+                        if (subElm.id == this.state.selectedSubCategory) {
+
                             renderThirdCategory.push(subElm.theCategoryThirdLvLv.map((obj, index) =>
-                            <option
-                                value={obj.id}
-                            >{obj.category_third_lv_name}
-                            </option>
-                        ))
+                                <option
+                                    value={obj.id}
+                                >{obj.category_third_lv_name}
+                                </option>
+                            ))
                         }
-                     
+
                     })
                 })
                 console.log("selectedSubCategory has been changed to")
@@ -273,9 +279,9 @@ class Form extends React.Component {
                     error: err
                 });
             });
-            
+
     }
-    
+
 
     render() {
 
@@ -292,6 +298,8 @@ class Form extends React.Component {
                         <h6>Third Category: {this.state.selectedThirdCategory}</h6>
                         <h6>Remark: {this.state.remark}</h6>
                         <h6>Selling Price: {this.state.sellingPrice}</h6>
+                        <h6>Currency:{this.state.currency}</h6>
+                        <h6>CheckBox: {this.state.checked.toString()}</h6>
                     </div>
                     <form onSubmit={this.handleSubmit}>
 
@@ -352,31 +360,30 @@ class Form extends React.Component {
                                 name="remark"
                                 type="text"
                                 class="form-control"
-                                id="description"
                                 placeholder="Remark..."
                                 onChange={this.handleInputChange}
                                 ref={(input) => this.myinput = input}
                             />
                         </div>
-                        <div class="form-group">
-                            <label>Address 2</label>
-                            <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor" />
-                        </div>
+
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label>Selling Price</label>
                                 <input
-                                id="sellingPrice"
-                                name="sellingPrice"
+                                    id="sellingPrice"
+                                    name="sellingPrice"
                                     type="text"
                                     class="form-control"
-                                    id="sellingPrice"
                                     placeholder="Selling Price..."
                                 />
                             </div>
                             <div class="form-group col-md-2">
                                 <label>Currency</label>
-                                <select id="currency" class="form-control">
+                                <select id="currency"
+                                        name="currency"
+                                         class="form-control"
+                                         onChange={this.handleInputChange}
+                                         >
                                     <option selected>Choose...</option>
                                     <option>HKD</option>
                                     <option>USD</option>
@@ -387,8 +394,11 @@ class Form extends React.Component {
                         <div class="form-group">
                             <div class="form-check">
                                 <label class="form-check-label">
-                                    <input class="form-check-input" type="checkbox" value="" />
-                                                                Check me out
+                                    <input class="form-check-input"
+                                     type="checkbox"
+                                      value=""
+                                      onChange={this.handlecheckBoxChange} />
+                                      Check me out
           <span class="form-check-sign">
                                         <span class="check"></span>
                                     </span>
@@ -397,6 +407,7 @@ class Form extends React.Component {
                         </div>
                         <button type="submit"
                             class="btn btn-primary"
+                            disabled = {!this.state.checked}
                         >Sell</button>
                     </form>
                 </Container>

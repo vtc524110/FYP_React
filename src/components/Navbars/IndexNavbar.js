@@ -28,11 +28,12 @@ import {
   NavItem,
   NavLink,
   Nav,
-  Container
+  Container,
+
 } from "reactstrap";
 
 function IndexNavbar() {
-  const [navbarColor, setNavbarColor] = React.useState("navbar-transparent");
+  const [navbarColor, setNavbarColor] = React.useState("");
   const [navbarCollapse, setNavbarCollapse] = React.useState(false);
 
   const toggleNavbarCollapse = () => {
@@ -51,7 +52,7 @@ function IndexNavbar() {
         document.documentElement.scrollTop < 300 ||
         document.body.scrollTop < 300
       ) {
-        setNavbarColor("navbar-transparent");
+        setNavbarColor("");
       }
     };
 
@@ -62,7 +63,8 @@ function IndexNavbar() {
     };
   });
   return (
-    <Navbar className={classnames("fixed-top", navbarColor)} expand="lg">
+    <Navbar className={classnames("fixed-top", navbarColor)}  expand="lg">
+      
       <Container>
         <div className="navbar-translate">
           <NavbarBrand
@@ -70,7 +72,7 @@ function IndexNavbar() {
             href="/index"
             title="Bid For Everything"
           >
-            <img src={require("assets/img/logo.png")} width={300} height={100} />
+            <img src={require("assets/img/logo.png")} alt='' width={310} height={90} />
           </NavbarBrand>
           <button
             aria-expanded={navbarCollapse}
@@ -97,7 +99,7 @@ function IndexNavbar() {
                 target="_blank"
                 title="Follow us on Twitter"
               >
-                <i className="fa fa-twitter" />
+                <i class="fa fa-twitter-square" aria-hidden="true"></i>
                 <p className="d-lg-none">Twitter</p>
               </NavLink>
             </NavItem>

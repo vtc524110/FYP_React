@@ -22,53 +22,13 @@ import React from "react";
 import { Card, CardImg, CardBody, CardTitle, CardText, Button, Container, Row, Col } from 'reactstrap';
 // core components
 
+import Biddings from "components/Biddings";
+
 function SectionCatalogue() {
 
     return (
         <>
-            <div className="section">
-
-                <Container className="text-center">
-                    <Card className="text-center">
-                        <CardBody>
-                            <Row>
-                            <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                                <Card style={{ width: '20rem' }}>
-                                    <CardImg top src={require("assets/img/mac_apple.jpg")} alt="..." />
-                                    <CardBody>
-                                        <CardTitle>Super Computer</CardTitle>
-                                        <CardText>Give you best performance</CardText>
-                                        <Button color="primary">$5400000</Button>
-                                    </CardBody>
-                                </Card>
-                                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                                <Card style={{ width: '20rem' }} className="text-center">
-                                    <CardImg top src={require('assets/img/benz.png')} alt="..." />
-                                    <CardBody>
-                                        <CardTitle>Benz</CardTitle>
-                                        <CardText>Sell it quicky, dont think</CardText>
-                                        <CardText>Used 10 years, 99% new</CardText>
-                                        <Button color="primary">$1200</Button>
-                                    </CardBody>
-                                </Card>
-                                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                                <Card style={{ width: '20rem' }} className="text-right">
-                                    <CardImg top src={require('assets/img/aeroplane.jpg')} alt="..." />
-                                    <CardBody>
-                                        <CardTitle>Aeroplane</CardTitle>
-                                        <CardText>Have you tried buying an aeroplane ?</CardText>
-                                        <Button color="primary">$12M ( $12000000 )</Button>
-                                    </CardBody>
-                                </Card>
-                                <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                                <Col className="ml-auto mr-auto text-center" md="8">
-                                </Col>
-                            </Row>
-                        </CardBody>
-                    </Card>
-                </Container>
-            </div>
-
+           <Biddings title="Recommend items"/>
         </>
     );
 }

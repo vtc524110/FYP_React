@@ -58,19 +58,19 @@ function DemoFooter() {
           <div className="credits ml-auto">
             <span className="copyright">
               © 16 - May - 2020&nbsp;
-              <i className="fa fa-battery-half" /> Contributed by Alan, Desmond, Wing, Xiu
+              <i className="fa fa-battery-half" /> Contributed by Alan, Desmond, Wing, Hugo
             </span>
           </div>
-        </Row>
-        <Row>
           <div className="credits ml-auto">
             <span className="copyright">
-              Image copyrighted by
+              Image copyrighted by 
             </span>
+            </div>
+            <div className="credits ml-auto">
             <span className="copyright">
-              <a href="https://www.freepik.com/free-photos-vectors/sale">Sale vector created by katemangostar - www.freepik.com</a>
+            <a href="https://www.freepik.com/free-photos-vectors/sale">Sale vector created by katemangostar - www.freepik.com</a>
             </span>
-          </div>
+            </div>
         </Row>
       </Container>
     </footer>

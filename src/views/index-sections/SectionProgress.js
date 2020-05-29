@@ -19,6 +19,12 @@
 import React from "react";
 import CarsProperty from "components/Category/CarsProperty.js";
 import Fashion from "components/Category/Fashion.js";
+import HomeLiving from "components/Category/HomeLiving.js";
+import HobbiesGames from "components/Category/HobbiesGames.js";
+import MobilesElectronics from "components/Category/MobilesElectronics.js";
+import Other from "components/Category/Other.js";
+
+
 // reactstrap components
 import {
   Card,
@@ -28,9 +34,7 @@ import {
   Nav,
   TabContent,
   TabPane,
-  Container,
-  Row,
-  Col
+  Container
 } from "reactstrap";
 
 // core components
@@ -118,13 +122,22 @@ function SectionProgress() {
           </div>
           <TabContent activeTab={activeTab} className="text-center">
             <TabPane tabId="1">
-              <CarsProperty></CarsProperty>
+              <CarsProperty />
             </TabPane>
             <TabPane tabId="2">
-              <Fashion></Fashion>
+              <Fashion />
             </TabPane>
             <TabPane tabId="3">
-              <p>Here are your messages.</p>
+              <HomeLiving />
+            </TabPane>
+            <TabPane tabId="4">
+              <MobilesElectronics/>
+            </TabPane>
+            <TabPane tabId="5">
+                    <HobbiesGames/>
+            </TabPane>
+            <TabPane tabId="6">
+          <Other/>
             </TabPane>
           </TabContent>
           </CardBody>
