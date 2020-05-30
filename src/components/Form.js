@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-
+import CustomModal from "components/CustomModal.js";
 import {
     Container,
 } from "reactstrap";
@@ -55,7 +55,7 @@ class Form extends React.Component {
             },
             "bidding_currency": null,
             "district_id": null,
-            "seller_customer_id": 31,
+            "seller_customer_id": 33,
             "buyer_customer_id": null,
             "bidding_status_id": this.state.sellerID,
             "logistics_di_id": null,
@@ -69,6 +69,7 @@ class Form extends React.Component {
             .then(function (response) {
                 console.log("Successful posting!!!")
                 console.log(response);
+         
             })
             .catch(function (error) {
                 console.log("Error~~~ posting!!!")
@@ -375,6 +376,7 @@ class Form extends React.Component {
                                     type="text"
                                     class="form-control"
                                     placeholder="Selling Price..."
+                                    onChange={this.handleInputChange}
                                 />
                             </div>
                             <div class="form-group col-md-2">

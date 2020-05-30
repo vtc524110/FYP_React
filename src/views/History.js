@@ -24,12 +24,12 @@ import React from "react";
 import IndexNavbar from "components/Navbars/IndexNavbar.js";
 import IndexHeader from "components/Headers/IndexHeader.js";
 import DemoFooter from "components/Footers/DemoFooter.js";
-import Cars from "components/Cars.js";
+import HistoryItem from "components/HistoryItem.js";
 
 //import SectionForm from "views/index-sections/SectionForm.js";
 import { Link, Route } from "react-router-dom";
 
-function CarsForSale({match}) {
+function History({ match }) {
     document.documentElement.classList.remove("nav-open");
     React.useEffect(() => {
         document.body.classList.add("CarsForSale");
@@ -37,20 +37,22 @@ function CarsForSale({match}) {
             document.body.classList.remove("CarsForSale");
         };
     });
-        return (
-            <>
-                <IndexNavbar />
-                <IndexHeader />
-                <div className="main">
-                    {" "}
-                    <Cars 
-                    title="Cars For Sale"
-                    url= {match.url} />
-                    <DemoFooter />
-                </div>
-            </>
-        );
+    return (
+        <>
+            <IndexNavbar />
+            <IndexHeader />
+            <div className="main">
+                {" "}
+                <HistoryItem
+                    title="History"
+                    url={match.url}
+                    seller_customer_id="33"
+                />
+                <DemoFooter />
+            </div>
+        </>
+    );
 
 }
 
-export default CarsForSale;
+export default History;

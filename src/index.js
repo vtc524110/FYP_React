@@ -33,6 +33,7 @@ import ProfilePage from "views/examples/ProfilePage.js";
 import RegisterPage from "views/examples/RegisterPage.js";
 import CarsForSale from "views/CarsForSale.js";
 import ProductPage from "views/ProductPage.js";
+import History from "views/History.js"
 // others
 
 ReactDOM.render(
@@ -63,6 +64,10 @@ ReactDOM.render(
       <Route
         path="/register-page"
         render={props => <RegisterPage {...props} />}
+      />
+      <Route
+        path="/history"
+        render={props => <History {...props} />}
       />
       <Redirect to="/index" />
     </Switch>
