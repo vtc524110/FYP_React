@@ -28,6 +28,7 @@ class Item extends React.Component {
             itemShow: 3,
             random: 0,
             bidding_price: null,
+            buyer_customer_id : 33,
             remarks: null,
             checked: false,
             loading: true,
@@ -36,7 +37,25 @@ class Item extends React.Component {
     }
 
     fetchBiddings = () => {
-        console.log(`http://desmond.business:8080/fyp/getBiddingsByID/${this.props.id}`)
+        axios.get(`http://desmond.business:8080/fyp/getBiddingHistoryByBiddingNumber/${this.props.id}`)
+            .then(res => {
+                // Transform the raw data by extracting the nested posts
+                const updateCatalogue = this.state.catalogue
+                const posts = res.data.results[0];
+                this.setState({
+                    bidding_price: posts.bidding_price,
+                    loading: false,
+                    error: null
+                });
+            })
+            .catch(err => {
+                // Something went wrong. Save the error in state and re-render.
+                this.setState({
+                    loading: false,
+                    error: err
+                });
+            });
+        
         axios.get(`http://desmond.business:8080/fyp/getBiddingByID/${this.props.id}`)
             .then(res => {
                 // Transform the raw data by extracting the nested posts
@@ -49,14 +68,14 @@ class Item extends React.Component {
                             <CardImg top src={require("assets/img/mac_apple.jpg")} alt="..." />
                             <CardBody>
                                 <CardTitle>{posts.title}</CardTitle>
-                                <CardText>Create time: {posts.create_timestamp} Latest Price: ${posts.bidding_price} {posts.bidding_currency} Remark: {posts.remarks}</CardText>
+                                <CardText>Create time: {posts.create_timestamp} Latest Price: ${this.state.bidding_price} {posts.bidding_currency} Selling Price: ${posts.selling_price} {posts.bidding_currency} Remark: {posts.remarks}</CardText>
                             </CardBody>
                         </Card>
                     </Col>
                 )
 
                 console.log(this.state.catalogue);
-            
+
                 //console.log(posts);
                 // Update state to trigger a re-render.
                 // Clear any errors, and turn off the loading indiciator.
@@ -78,36 +97,10 @@ class Item extends React.Component {
 
     handleSubmit = (event) => {
         event.preventDefault()
-        axios.put('http://desmond.business:8080/fyp/putBidding', {
-            "id": this.state.item.id,
-            "title": this.state.item.title,
-            "category_third_lv_id": this.state.item.selectedThirdCategory,
-            "condition_id": this.state.item.condition_id,
-            "details": this.state.item.details,
-            "selling_price": this.state.item.selling_price,
+        axios.post('http://desmond.business:8080/fyp/postBiddingHistory', {
             "bidding_price": this.state.bidding_price,
-            "closing_date_timestmp": null,
-            "theBiddingPhotos": {
-                "id": 118,
-                "photo1": null,
-                "photo_type1": null,
-                "photo2": null,
-                "photo_type2": null,
-                "photo3": null,
-                "photo_type3": null,
-                "create_timestamp": "2020-05-17 15:14:00",
-                "modify_timestamp": null
-            },
-            "bidding_currency": this.state.item.bidding_currency,
-            "district_id": this.state.item.district_id,
-            "seller_customer_id": this.state.item.seller_customer_id,
-            "buyer_customer_id": this.state.item.buyer_customer_id,
-            "bidding_status_id": this.state.item.sellerID,
-            "logistics_di_id": this.state.item.logistics_di_id,
-            "payment_id": this.state.item.payment_id,
-            "seller_ref_id": this.state.item.seller_ref_id,
-            "buyer_ref_id": this.state.item.buyer_ref_id,
-            "remarks": this.state.remarks,
+            "buyer_customer_id": this.state.buyer_customer_id,
+            "bidding_number": this.state.item.id
         })
             .then(function (response) {
                 console.log("Successful updating!!!")
@@ -209,8 +202,6 @@ class Item extends React.Component {
                                         {catalogue}
                                     </Col>
                                     <Col>
-                                    <h6>{this.state.bidding_price}</h6>
-                                    <h6>{this.state.remarks}</h6>
                                         <label>Post New Selling Price</label>
                                         <input
                                             id="bidding_price"
@@ -222,20 +213,6 @@ class Item extends React.Component {
                                         />
 
                                         <form onSubmit={this.handleSubmit}>
-
-
-                                            <div class="form-group">
-                                                <label>Remarks</label>
-                                                <input
-                                                    id="remarks"
-                                                    name="remarks"
-                                                    type="text"
-                                                    class="form-control"
-                                                    placeholder="Remark..."
-                                                    onChange={this.handleInputChange}
-                                                    ref={(input) => this.myinput = input}
-                                                />
-                                            </div>
 
 
                                             <div class="form-group">
