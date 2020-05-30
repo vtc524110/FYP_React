@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import CustomModal from 'components/CustomModal.js';
 
 import {
     Container,
@@ -410,6 +411,7 @@ class Form extends React.Component {
                             disabled = {!this.state.checked}
                         >Sell</button>
                     </form>
+                <CustomModal title="Success"/>
                 </Container>
             </div>
         );

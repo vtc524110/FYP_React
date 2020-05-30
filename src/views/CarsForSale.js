@@ -42,12 +42,6 @@ function CarsForSale({match}) {
                 <IndexNavbar />
                 <IndexHeader />
                 <div className="main">
-                    {" "}
-                    <ul>
-                        <li>
-                            <Link to={`${match.url}/shoes`}>Shoes</Link>
-                        </li>
-                    </ul>
                     <Cars 
                     title="Cars For Sale"
                     url= {match.url} />
