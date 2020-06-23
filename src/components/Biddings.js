@@ -39,14 +39,7 @@ class Biddings extends React.Component {
     }
 
     uploadImageS3 = (e) => {
-        const config = {
-            bucketName: 'caroubuy001',
-            dirName: 'fyp_001', /* optional */
-            region: 'eu-west-1',
-            accessKeyId: 'AKIA5LDGYZWVLZLGCKKZ',
-            secretAccessKey: '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',
-            s3Url: 'http://caroubuy001.s3-website.us-east-2.amazonaws.com', /* optional */
-        }
+
 
         const ReactS3Client = new S3(config);
         /*  Notice that if you don't provide a dirName, the file will be automatically uploaded to the root of your bucket */
