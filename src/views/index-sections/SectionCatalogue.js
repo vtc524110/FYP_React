@@ -19,7 +19,7 @@
 import React from "react";
 
 // reactstrap components
-import { Card, CardImg, CardBody, CardTitle, CardText, Button, Container, Row, Col } from 'reactstrap';
+//import { Card, CardImg, CardBody, CardTitle, CardText, Button, Container, Row, Col } from 'reactstrap';
 // core components
 
 import Biddings from "components/Biddings";

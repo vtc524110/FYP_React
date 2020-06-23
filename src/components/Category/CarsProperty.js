@@ -23,7 +23,7 @@ class CarsProperty extends React.Component {
         })
 
         axios.get(this.state.fetch)
-            .then(res => {
+        .then(res => {
                 // Transform the raw data by extracting the nested posts
 
                 const posts = res.data.results;

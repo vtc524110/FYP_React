@@ -12,7 +12,8 @@ class Fashion extends React.Component {
             data: [],
             category: "Fashion",
             category_second_lv_name: null,
-            fetch: "http://desmond.business:8080/fyp/getCategoryFirstLvs"
+            fetch: "http://desmond.business:8080/fyp/getCategoryFirstLvs",
+       
         }
     }
 
@@ -24,7 +25,7 @@ class Fashion extends React.Component {
         })
 
         axios.get(this.state.fetch)
-            .then(res => {
+        .then(res => {
                 // Transform the raw data by extracting the nested posts
 
                 const posts = res.data.results;

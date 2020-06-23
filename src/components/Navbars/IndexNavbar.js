@@ -99,7 +99,7 @@ function IndexNavbar() {
                 target="_blank"
                 title="Follow us on Twitter"
               >
-                <i class="fa fa-twitter-square" aria-hidden="true"></i>
+                <i className="fa fa-twitter-square" aria-hidden="true"></i>
                 <p className="d-lg-none">Twitter</p>
               </NavLink>
             </NavItem>

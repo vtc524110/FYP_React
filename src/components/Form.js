@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import CustomModal from "components/CustomModal.js";
+import S3 from 'react-aws-s3';
+
 import {
     Container,
 } from "reactstrap";
@@ -24,11 +26,52 @@ class Form extends React.Component {
             sellingPrice: "",
             sellerID: "",
             currency: null,
-            checked : false,
+            checked: false,
             loading: true,
-            error: null
+            error: null,
+            files: null
         };
 
+    }
+
+    setImage = (event) => {
+        let files = event.target.files;
+        this.setState({ files: files }, () => { console.log(this.state.files) });
+    }
+
+    uploadImageS3 = (e) => {
+        const config = {
+            bucketName: 'caroubuy001',
+            dirName: 'fyp_001', /* optional */
+            region: 'eu-west-1',
+            accessKeyId: 'AKIA5LDGYZWVLZLGCKKZ',
+            secretAccessKey: '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',
+            s3Url: 'http://caroubuy001.s3-website.us-east-2.amazonaws.com', /* optional */
+        }
+
+        const ReactS3Client = new S3(config);
+        /*  Notice that if you don't provide a dirName, the file will be automatically uploaded to the root of your bucket */
+
+        /* This is optional */
+        const newFileName = 'test-file';
+        console.log(this.state.files);
+        for (var i = 0; i < this.state.files.length; i++) {
+            ReactS3Client
+                .uploadFile(this.state.files[i])
+                .then(data => console.log(data))
+                .catch(err => console.error(err))
+        }
+
+
+        /**
+         * {
+         *   Response: {
+         *     bucket: "myBucket",
+         *     key: "image/test-image.jpg",
+         *     location: "https://myBucket.s3.amazonaws.com/media/test-file.jpg"
+         *   }
+         * }
+         */
     }
 
     handleSubmit = (event) => {
@@ -69,7 +112,7 @@ class Form extends React.Component {
             .then(function (response) {
                 console.log("Successful posting!!!")
                 console.log(response);
-         
+
             })
             .catch(function (error) {
                 console.log("Error~~~ posting!!!")
@@ -286,11 +329,9 @@ class Form extends React.Component {
 
     render() {
 
-        return (
-            <div className="section section-buttons">
-                <Container>
-                    <div className="title">
-                        <h3>Sell Information Form</h3>
+        /*
+                            <div className="title">
+
                         <h6>Form ID : {this.state.lastID}</h6>
                         <h6>Last Title: {this.state.title} </h6>
                         <h6>Last Selling Price: {this.state.sellingPrice}</h6>
@@ -302,13 +343,17 @@ class Form extends React.Component {
                         <h6>Currency:{this.state.currency}</h6>
                         <h6>CheckBox: {this.state.checked.toString()}</h6>
                     </div>
+                    */
+        return (
+            <div className="section section-buttons">
+                <Container>
+                    <h3>Sell Information Form</h3>
                     <form onSubmit={this.handleSubmit}>
-
-                        <div class="form-group">
+                        <div className="form-group">
                             <label>Title</label>
                             <input
                                 type="text"
-                                class="form-control"
+                                className="form-control"
                                 id="title"
                                 name="title"
                                 placeholder="Title..."
@@ -316,24 +361,24 @@ class Form extends React.Component {
                                 ref={(input) => this.myinput = input}
                             />
                         </div>
-                        <div class="form-group">
+                        <div className="form-group">
                             <label>Main Category</label>
                             <select
                                 id="selectedMainCategory"
                                 name="selectedMainCategory"
-                                class="form-control"
+                                className="form-control"
                                 onChange={this.handleMainCategoryChange}
                                 ref={(input) => this.myinput = input}
                             >
                                 {this.state.mainCategory}
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div className="form-group">
                             <label>Sub Category</label>
                             <select
                                 id="selectedSubCategory"
                                 name="selectedSubCategory"
-                                class="form-control"
+                                className="form-control"
                                 onChange={this.handleSubCategoryChange}
                                 ref={(input) => this.myinput = input}
                             >
@@ -341,12 +386,12 @@ class Form extends React.Component {
                                 {this.state.subCategory}
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div className="form-group">
                             <label>Third Category</label>
                             <select
                                 id="selectedThirdCategory"
                                 name="selectedThirdCategory"
-                                class="form-control"
+                                className="form-control"
                                 onChange={this.handleInputChange}
                                 ref={(input) => this.myinput = input}
                             >
@@ -354,62 +399,71 @@ class Form extends React.Component {
                                 {this.state.thirdCategory}
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div className="form-group">
                             <label>Remark</label>
                             <input
                                 id="remark"
                                 name="remark"
                                 type="text"
-                                class="form-control"
+                                className="form-control"
                                 placeholder="Remark..."
                                 onChange={this.handleInputChange}
                                 ref={(input) => this.myinput = input}
                             />
                         </div>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
+                        <div className="form-row">
+                            <div className="form-group col-md-4">
                                 <label>Selling Price</label>
                                 <input
                                     id="sellingPrice"
                                     name="sellingPrice"
                                     type="text"
-                                    class="form-control"
+                                    className="form-control"
                                     placeholder="Selling Price..."
                                     onChange={this.handleInputChange}
                                 />
                             </div>
-                            <div class="form-group col-md-2">
+                            <div className="form-group col-md-2">
                                 <label>Currency</label>
                                 <select id="currency"
-                                        name="currency"
-                                         class="form-control"
-                                         onChange={this.handleInputChange}
-                                         >
+                                    name="currency"
+                                    className="form-control"
+                                    onChange={this.handleInputChange}
+                                >
                                     <option selected>Choose...</option>
                                     <option>HKD</option>
                                     <option>USD</option>
                                     <option>JPY</option>
                                 </select>
                             </div>
+                            <div className="form-group col-md-2">
+                                <label>Picture Upload</label>
+                                <input type="file" id="file" multiple name="file" onChange={this.setImage} />
+                                <button type="button"
+                                    className="btn btn-primary"
+                                    onClick={this.uploadImageS3}
+                                >Picture Upload</button>
+                            </div>
+
                         </div>
-                        <div class="form-group">
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input class="form-check-input"
-                                     type="checkbox"
-                                      value=""
-                                      onChange={this.handlecheckBoxChange} />
+                        <div className="form-group">
+                            <div className="form-check">
+                                <label className="form-check-label">
+                                    <input className="form-check-input"
+                                        type="checkbox"
+                                        value=""
+                                        onChange={this.handlecheckBoxChange} />
                                       Check me out
-          <span class="form-check-sign">
-                                        <span class="check"></span>
+          <span className="form-check-sign">
+                                        <span className="check"></span>
                                     </span>
                                 </label>
                             </div>
                         </div>
                         <button type="submit"
-                            class="btn btn-primary"
-                            disabled = {!this.state.checked}
+                            className="btn btn-primary"
+                            disabled={!this.state.checked}
                         >Sell</button>
                     </form>
                 </Container>
